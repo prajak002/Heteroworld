@@ -1,0 +1,38 @@
+# environments and tooling
+.venv/
+.claude/
+.pytest_cache/
+__pycache__/
+*.pyc
+.DS_Store
+.env*
+node_modules/
+
+# private notes and the anonymous submission (double-blind review)
+STATUS.md
+paper/
+prompts/
+
+# data: training sets, the ETH/UCY mirror (no redistribution licence), checkpoints
+data/*
+!data/nyc/
+checkpoints/
+kaggle/ethucy_dataset/
+kaggle/*/code.tar.gz
+
+# third-party source models (download instructions in twin/assets_src/README.md) and build output
+twin/assets_src/*
+!twin/assets_src/README.md
+twin/dist/
+twin/*.png
+twin/*.log
+twin/misses.log
+docs/nyc_viewer/avatars/
+
+# run logs and machine-specific helpers
+jobs/*.out
+jobs/*.failed
+jobs/vast/
+jobs/pull_vast.*
+results/**/*.log
+*.log

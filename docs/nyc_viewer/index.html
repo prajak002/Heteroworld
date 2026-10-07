@@ -1,0 +1,449 @@
+<title>NYC Sidewalk Twin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a full-height 3D street scene with a docked control rail (stacks under the scene on phones). */
+:root {
+  --bg: #e9ecee; --panel: #f7f8f8; --fg: #1b2126; --muted: #5d6870; --line: #c9d0d4;
+  --robot: #1d5fd1; --ped: #c4521a; --bad: #b3261e; --ok: #2e7d4f; --accent: #1d5fd1;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #12161a; --panel: #1a2026; --fg: #e4e9ec; --muted: #94a0a8; --line: #2c353d;
+  --robot: #6fa2ff; --ped: #f08a4b; --bad: #ff7a70; --ok: #6fcf97; --accent: #6fa2ff; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #12161a; --panel: #1a2026; --fg: #e4e9ec; --muted: #94a0a8; --line: #2c353d;
+  --robot: #6fa2ff; --ped: #f08a4b; --bad: #ff7a70; --ok: #6fcf97; --accent: #6fa2ff; color-scheme: dark }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 14px/1.5 var(--body); }
+.app { display: grid; grid-template-columns: minmax(0, 1fr) 340px; height: 100%; }
+.stage { position: relative; min-width: 0; min-height: 320px; }
+#gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hud { position: absolute; left: 16px; top: 16px; display: flex; gap: 8px; flex-wrap: wrap; pointer-events: none; }
+.chip { pointer-events: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font: 500 12px/1.6 var(--mono); }
+.chip.collision { color: var(--bad); border-color: var(--bad); }
+.chip.completed { color: var(--ok); border-color: var(--ok); }
+.place { position: absolute; left: 16px; bottom: 16px; font: 12px/1.4 var(--mono); color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; max-width: calc(100% - 32px); }
+.rail { background: var(--panel); border-left: 1px solid var(--line); padding-block: 20px; padding-inline: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+h1 { font: 700 22px/1.15 var(--display); margin: 0; letter-spacing: -0.01em; text-wrap: balance; }
+.sub { color: var(--muted); margin: 6px 0 0; }
+.label { font: 500 11px/1.4 var(--body); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: 500 13px var(--body); border: 1px solid var(--line); background: transparent; color: var(--fg); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--panel); border-color: var(--fg); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font: 13px var(--mono); font-variant-numeric: tabular-nums; margin: 0; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; min-width: 0; }
+.player { display: flex; align-items: center; gap: 10px; }
+.player button { font: 500 13px var(--body); border: 1px solid var(--fg); background: var(--fg); color: var(--panel); border-radius: 8px; padding: 6px 14px; cursor: pointer; min-width: 72px; }
+#scrub { flex: 1; min-width: 0; accent-color: var(--accent); }
+.time { font: 13px var(--mono); font-variant-numeric: tabular-nums; color: var(--muted); min-width: 56px; text-align: right; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.note { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.note p { margin: 0 0 8px; }
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; grid-template-rows: 58vh auto; height: auto; }
+  .rail { border-left: 0; border-top: 1px solid var(--line); }
+}
+</style>
+
+<div class="app">
+  <div class="stage">
+    <canvas id="gl" aria-label="3D replay of delivery robots and pedestrians on a New York City sidewalk"></canvas>
+    <div class="hud"><span class="chip" id="outcome">loading</span><span class="chip" id="counts"></span></div>
+    <div class="place" id="place"></div>
+  </div>
+  <aside class="rail">
+    <div>
+      <h1>NYC Sidewalk Twin</h1>
+      <p class="sub">Delivery robots and pedestrians at a real Manhattan sidewalk pinch point, replayed from the benchmark.</p>
+    </div>
+    <div>
+      <div class="label">Place</div>
+      <div class="seg" id="scenarios"></div>
+    </div>
+    <dl class="facts" id="facts"></dl>
+    <div>
+      <div class="label">Robot planner</div>
+      <div class="seg" id="methods"></div>
+    </div>
+    <div>
+      <div class="label">Episode</div>
+      <div class="seg" id="episodes"></div>
+    </div>
+    <div class="player">
+      <button id="play" type="button">Pause</button>
+      <input id="scrub" type="range" min="0" max="0" value="0" aria-label="Time">
+      <span class="time" id="clock">0.0 s</span>
+    </div>
+    <div class="seg" id="views">
+      <button type="button" data-view="street" aria-pressed="true">Street view</button>
+      <button type="button" data-view="close">Close-up</button>
+      <button type="button" data-view="plan">Plan view</button>
+    </div>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--robot)"></span>Delivery robot</span>
+      <span><span class="dot" style="background:var(--ped)"></span>Pedestrian</span>
+      <span><span class="dot" style="background:var(--bad)"></span>Contact</span>
+    </div>
+    <div class="note" id="about"></div>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/fflate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/curves/NURBSUtils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/curves/NURBSCurve.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FBXLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/SkeletonUtils.js"></script>
+<script>
+const METHOD_NAMES = { union_select: "Union of rollouts", hw_robust: "HETERO-WORLD (ours)", cv_robust: "Constant velocity", mixture_robust: "Mixture", oracle_robust: "Oracle" };
+const AVATARS = [
+  { file: "Male_Adult_01", code: "m002", sex: "m" }, { file: "Female_Adult_01", code: "f001", sex: "f" },
+  { file: "Male_Adult_05", code: "m009", sex: "m" }, { file: "Female_Adult_04", code: "f004", sex: "f" },
+];
+const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const state = { index: null, data: {}, scenario: null, method: null, episode: 0, t: 0, playing: true, view: "street" };
+
+// ---------- renderer ----------
+const canvas = document.getElementById("gl");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.outputEncoding = THREE.sRGBEncoding;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 600);
+const controls = new THREE.OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.maxPolarAngle = Math.PI * 0.495;
+scene.add(new THREE.HemisphereLight(0xe3ecf4, 0x5f574d, 0.9));
+const sun = new THREE.DirectionalLight(0xfff4e5, 0.8);
+sun.position.set(-30, 60, 20); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -45, right: 45, top: 45, bottom: -45, far: 200 });
+scene.add(sun);
+let world = new THREE.Group(); scene.add(world);
+let agents = [];
+
+function dark() {
+  const t = document.documentElement.dataset.theme;
+  return t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+}
+function palette() {
+  return dark()
+    ? { sky: 0x141a20, road: 0x2b3036, walk: 0x80848a, curb: 0x9a9da0, bldg: [0x3d434a, 0x464c53, 0x52575c], pit: 0x4a3a2c, leaf: 0x3f7a4a, sim: 0xff7a70 }
+    : { sky: 0xdce4ea, road: 0x4f5458, walk: 0xcdcac3, curb: 0xe4e1db, bldg: [0xb7ad9f, 0xa59c90, 0xc4beb4], pit: 0x6b5440, leaf: 0x4f8f5a, sim: 0xb3261e };
+}
+const lambert = (color, extra = {}) => new THREE.MeshLambertMaterial(Object.assign({ color }, extra));
+function add(mesh) { mesh.castShadow = true; mesh.receiveShadow = true; world.add(mesh); return mesh; }
+
+// Sim/local frame (x along the sidewalk, y towards the buildings) -> three.js (x, up, z = -y).
+function shapeFrom(pts) {
+  const s = new THREE.Shape();
+  pts.forEach(([x, y], i) => (i ? s.lineTo(x, y) : s.moveTo(x, y)));
+  return s;
+}
+function slab(pts, height, color, lift = 0) {
+  const g = new THREE.ExtrudeGeometry(shapeFrom(pts), { depth: height, bevelEnabled: false });
+  g.rotateX(-Math.PI / 2);
+  const m = add(new THREE.Mesh(g, lambert(color)));
+  m.position.y = lift;
+  return m;
+}
+function tree(x, y, c) {
+  add(new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.17, 3.4, 10), lambert(0x5a4632))).position.set(x, 1.7, -y);
+  add(new THREE.Mesh(new THREE.IcosahedronGeometry(1.9, 1), lambert(c.leaf, { flatShading: true }))).position.set(x, 4.6, -y);
+}
+
+function buildWorld(d) {
+  scene.remove(world); world = new THREE.Group(); scene.add(world);
+  const c = palette();
+  scene.background = new THREE.Color(c.sky);
+  scene.fog = new THREE.Fog(c.sky, 120, 320);
+  const W = d.corridor_half_width;
+  const pinchHalf = d.gap_half_length + d.taper_length;
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(600, 600), lambert(c.road));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; world.add(ground);
+  const sc = d.scene;
+  if (sc) {
+    sc.sidewalks.forEach((p) => slab(p, 0.15, c.walk, 0));
+    sc.buildings.forEach((b, i) => slab(b.pts, b.h, c.bldg[i % 3], 0));
+    sc.pits.forEach((p) => {
+      const cx = p.reduce((a, q) => a + q[0], 0) / p.length;
+      if (Math.abs(cx) > pinchHalf) slab(p, 0.2, c.pit, 0);
+    });
+    sc.trees.forEach(([x, y]) => { if (Math.abs(x) > pinchHalf || Math.abs(y) > W + 0.8) tree(x, y, c); });
+  } else {
+    slab([[-d.half_length, -W], [d.half_length, -W], [d.half_length, W], [-d.half_length, W]], 0.15, c.walk, 0);
+    const n = Math.ceil(2 * d.half_length / 6);
+    for (let i = 0; i < n; i++) {
+      const x0 = -d.half_length + i * 6, h = 9 + ((i * 37) % 7) * 2.2;
+      slab([[x0, W + 0.2], [x0 + 5.8, W + 0.2], [x0 + 5.8, W + 4.2], [x0, W + 4.2]], h, c.bldg[i % 3], 0);
+    }
+  }
+  // The simulated walkway's obstructions (the measured pinch, applied symmetrically).
+  const xs = d.walls.x, ws = d.walls.w;
+  for (let i = 0; i < xs.length - 1; i++) {
+    const intrude = W - ws[i];
+    if (intrude < 0.05) continue;
+    const dx = xs[i + 1] - xs[i];
+    for (const side of [-1, 1]) {
+      const m = add(new THREE.Mesh(new THREE.BoxGeometry(dx, 0.35, intrude), lambert(c.pit)));
+      m.position.set(xs[i] + dx / 2, 0.32, -side * (W - intrude / 2));
+    }
+  }
+  tree(0, W - (W - d.gap_half_width) / 2, c);
+  setView(state.view, d);
+}
+
+// ---------- humanoid avatars (Microsoft Rocketbox, MIT) ----------
+const avatarCache = {};
+const clipCache = {};
+const fbx = new THREE.FBXLoader();
+const texLoader = new THREE.TextureLoader();
+// Models ship as base64 inside JSON (the page host serves only web file types); decode and parse.
+async function loadFBX(url) {
+  const pkg = await (await fetch(url + ".json")).json();
+  const bin = atob(pkg.data);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return fbx.parse(bytes.buffer, "avatars/");
+}
+function tex(url) { const t = texLoader.load(url); t.encoding = THREE.sRGBEncoding; t.flipY = true; return t; }
+
+async function avatar(spec) {
+  if (avatarCache[spec.file]) return avatarCache[spec.file];
+  const obj = await loadFBX(`avatars/${spec.file}.fbx`);
+  const body = tex(`avatars/${spec.code}_body_color.png`), head = tex(`avatars/${spec.code}_head_color.png`), hair = tex(`avatars/${spec.code}_opacity_color.png`);
+  obj.traverse((o) => {
+    if (!o.isMesh) return;
+    o.castShadow = true; o.frustumCulled = false;
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    const out = mats.map((m) => {
+      const name = (m && m.name || "").toLowerCase();
+      const map = name.includes("head") ? head : name.includes("opacity") ? hair : body;
+      return new THREE.MeshLambertMaterial({ map, skinning: true, alphaTest: name.includes("opacity") ? 0.5 : 0, transparent: false, side: name.includes("opacity") ? THREE.DoubleSide : THREE.FrontSide });
+    });
+    o.material = Array.isArray(o.material) ? out : out[0];
+  });
+  // Normalise: upright, 1.7 m tall, feet on the ground.
+  const wrap = new THREE.Group();
+  wrap.add(obj);
+  let box = new THREE.Box3().setFromObject(obj);
+  let size = box.getSize(new THREE.Vector3());
+  if (size.z > size.y * 1.5) { obj.rotation.x = -Math.PI / 2; obj.updateMatrixWorld(true); box = new THREE.Box3().setFromObject(obj); size = box.getSize(new THREE.Vector3()); }
+  const s = 1.72 / size.y;
+  obj.scale.multiplyScalar(s);
+  obj.updateMatrixWorld(true);
+  box = new THREE.Box3().setFromObject(obj);
+  obj.position.y -= box.min.y;
+  avatarCache[spec.file] = wrap;
+  return wrap;
+}
+async function clip(name) {
+  if (!clipCache[name]) clipCache[name] = loadFBX(`avatars/${name}.max.fbx`).then((o) => o.animations[0]);
+  return clipCache[name];
+}
+
+function deliveryRobot(r) {
+  const g = new THREE.Group();
+  const shell = lambert(new THREE.Color(css("--robot")));
+  const body = new THREE.Mesh(new THREE.BoxGeometry(2 * r * 0.95, 0.42, 2 * r * 0.78), shell);
+  body.position.y = 0.38; body.castShadow = true; g.add(body);
+  const lid = new THREE.Mesh(new THREE.BoxGeometry(2 * r * 0.85, 0.06, 2 * r * 0.68), lambert(0xf2f2f2));
+  lid.position.y = 0.62; g.add(lid);
+  for (const sx of [-1, 0, 1]) for (const sz of [-1, 1]) {
+    const w = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.06, 14), lambert(0x222222));
+    w.rotation.x = Math.PI / 2; w.position.set(sx * r * 0.6, 0.1, sz * r * 0.82); g.add(w);
+  }
+  const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.9, 6), lambert(0x333333));
+  mast.position.set(-r * 0.7, 1.05, 0); g.add(mast);
+  const flag = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.12, 0.2), lambert(0xff6a00));
+  flag.position.set(-r * 0.7, 1.45, 0.1); g.add(flag);
+  return g;
+}
+
+async function buildAgents(ep, d) {
+  agents.forEach((a) => world.remove(a.group));
+  agents = [];
+  const r = d.agent_radius;
+  let k = 0;
+  for (let i = 0; i < ep.is_human.length; i++) {
+    const g = new THREE.Group();
+    let mixer = null, walk = null, idle = null;
+    if (ep.is_human[i]) {
+      const spec = AVATARS[(k++ + i) % AVATARS.length];
+      try {
+        const base = await avatar(spec);
+        const person = THREE.SkeletonUtils.clone(base);
+        g.add(person);
+        mixer = new THREE.AnimationMixer(person);
+        walk = mixer.clipAction(await clip(`${spec.sex}_walk_neutral_01`));
+        idle = mixer.clipAction(await clip(`${spec.sex}_idle_neutral_01`));
+        walk.play(); idle.play(); idle.setEffectiveWeight(0);
+        mixer.setTime(Math.random() * 2);
+      } catch (e) {
+        console.warn("avatar failed, using a simple figure", e);
+        const m = new THREE.Mesh(new THREE.CapsuleBufferGeometry ? new THREE.CapsuleBufferGeometry(0.2, 1.2, 4, 8) : new THREE.CylinderGeometry(0.2, 0.2, 1.6, 10), lambert(new THREE.Color(css("--ped"))));
+        m.position.y = 0.85; g.add(m);
+      }
+    } else {
+      g.add(deliveryRobot(r));
+    }
+    const ring = new THREE.Mesh(new THREE.RingGeometry(r * 1.05, r * 1.35, 28), new THREE.MeshBasicMaterial({ color: new THREE.Color(css("--bad")), side: THREE.DoubleSide }));
+    ring.rotation.x = -Math.PI / 2; ring.position.y = 0.17; ring.visible = false; g.add(ring);
+    world.add(g);
+    agents.push({ group: g, ring, mixer, walk, idle, human: !!ep.is_human[i], speed: 0 });
+  }
+}
+
+function placeAgents(ep, t, dt) {
+  const f = ep.frames[Math.min(t, ep.frames.length - 1)];
+  const prev = ep.frames[Math.max(0, Math.min(t, ep.frames.length - 1) - 1)];
+  let active = 0, contact = false;
+  f.p.forEach(([x, y], i) => {
+    const a = agents[i];
+    if (!a) return;
+    const parked = f.d[i] === 1 || Math.abs(x) > 60;
+    a.group.visible = !parked;
+    a.ring.visible = false;
+    if (parked) return;
+    active++;
+    a.group.position.set(x, 0.15, -y);
+    a.group.rotation.y = f.h[i] + (a.human ? Math.PI / 2 : 0);
+    const v = Math.hypot(x - prev.p[i][0], y - prev.p[i][1]) / state.d.dt;
+    a.speed = 0.8 * a.speed + 0.2 * v;
+    if (a.mixer) {
+      const moving = Math.min(1, Math.max(0, (a.speed - 0.08) / 0.25));
+      a.walk.setEffectiveWeight(moving); a.idle.setEffectiveWeight(1 - moving);
+      a.walk.setEffectiveTimeScale(Math.max(0.4, a.speed / 1.25));
+      a.mixer.update(dt);
+    }
+  });
+  const r2 = Math.pow(2 * state.d.agent_radius, 2);
+  for (let i = 0; i < f.p.length; i++) for (let j = i + 1; j < f.p.length; j++) {
+    if (!agents[i] || !agents[j] || !agents[i].group.visible || !agents[j].group.visible) continue;
+    const dx = f.p[i][0] - f.p[j][0], dy = f.p[i][1] - f.p[j][1];
+    if (dx * dx + dy * dy < r2) { agents[i].ring.visible = agents[j].ring.visible = true; contact = true; }
+  }
+  document.getElementById("counts").textContent = `${active} on sidewalk${contact ? " · contact" : ""}`;
+}
+
+function setView(view, d = state.d) {
+  state.view = view;
+  document.querySelectorAll("#views button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+  if (!d) return;
+  if (view === "plan") camera.position.set(0, 55, 0.01);
+  else if (view === "close") camera.position.set(-7, 2.4, -d.corridor_half_width - 6);
+  else camera.position.set(-26, 16, -24);
+  controls.target.set(0, 0.8, 0); controls.update();
+}
+
+// ---------- UI ----------
+function seg(el, items, current, onPick) {
+  el.innerHTML = "";
+  items.forEach(([value, text]) => {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = text; b.setAttribute("aria-pressed", String(value === current));
+    b.addEventListener("click", () => onPick(value));
+    el.appendChild(b);
+  });
+}
+const episodesFor = () => state.d.episodes.filter((e) => e.method === state.method);
+
+function renderControls() {
+  seg(document.getElementById("scenarios"), state.index.places.map((p) => [p.name, p.title]), state.scenario, pickScenario);
+  const p = state.index.places.find((x) => x.name === state.scenario);
+  document.getElementById("facts").innerHTML = `
+    <dt>Sidewalk</dt><dd>${p.wide.toFixed(2)} m clear</dd>
+    <dt>Pinch</dt><dd>${p.pinch.toFixed(2)} m wide, ${p.length.toFixed(1)} m long</dd>
+    <dt>Source</dt><dd>${p.source}</dd>`;
+  const methods = [...new Set(state.d.episodes.map((e) => e.method))];
+  seg(document.getElementById("methods"), methods.map((m) => [m, METHOD_NAMES[m] || m]), state.method, (m) => { state.method = m; state.episode = 0; loadEpisode(); });
+  seg(document.getElementById("episodes"), episodesFor().map((e, i) => [i, `Seed ${e.seed % 1000}`]), state.episode, (i) => { state.episode = i; loadEpisode(); });
+  document.getElementById("place").textContent = state.d.scene
+    ? `${p.title} · ${state.d.scene.lat.toFixed(5)}, ${state.d.scene.lon.toFixed(5)} · ${state.d.scene.buildings.length} buildings from NYC Open Data`
+    : `${p.title} · representative geometry, generic block`;
+}
+
+async function loadEpisode() {
+  const ep = episodesFor()[state.episode];
+  state.ep = null; state.t = 0;
+  document.getElementById("outcome").textContent = "loading people";
+  await buildAgents(ep, state.d);
+  state.ep = ep;
+  const scrub = document.getElementById("scrub");
+  scrub.max = ep.frames.length - 1; scrub.value = 0;
+  const o = document.getElementById("outcome");
+  o.textContent = `${METHOD_NAMES[ep.method] || ep.method}: ${ep.outcome}`;
+  o.className = "chip " + ep.outcome;
+  renderControls();
+}
+
+async function pickScenario(name) {
+  state.scenario = name;
+  const place = state.index.places.find((p) => p.name === name);
+  if (!state.data[name]) {
+    document.getElementById("outcome").textContent = "loading";
+    const d = await (await fetch(place.episodes)).json();
+    if (place.scene) d.scene = await (await fetch(place.scene)).json();
+    state.data[name] = d;
+  }
+  state.d = state.data[name];
+  const methods = [...new Set(state.d.episodes.map((e) => e.method))];
+  if (!methods.includes(state.method)) state.method = methods.includes("hw_robust") ? "hw_robust" : methods[0];
+  state.episode = 0;
+  buildWorld(state.d);
+  await loadEpisode();
+}
+
+document.getElementById("play").addEventListener("click", () => {
+  state.playing = !state.playing;
+  document.getElementById("play").textContent = state.playing ? "Pause" : "Play";
+});
+document.getElementById("scrub").addEventListener("input", (e) => { state.t = +e.target.value; });
+document.querySelectorAll("#views button").forEach((b) => b.addEventListener("click", () => setView(b.dataset.view)));
+
+function resize() {
+  const r = canvas.parentElement.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / Math.max(r.height, 1); camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(canvas.parentElement);
+
+let last = performance.now(), acc = 0;
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function tick(now) {
+  const dt = Math.min(0.1, (now - last) / 1000); last = now;
+  if (state.ep) {
+    if (state.playing && !reduced) {
+      acc += dt;
+      while (acc >= state.d.dt) { acc -= state.d.dt; state.t = state.t + 1 >= state.ep.frames.length ? 0 : state.t + 1; }
+      document.getElementById("scrub").value = state.t;
+    }
+    placeAgents(state.ep, state.t, state.playing ? dt : 0);
+    document.getElementById("clock").textContent = `${(state.t * state.d.dt).toFixed(1)} s`;
+  }
+  controls.update();
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+
+(async function start() {
+  resize();
+  requestAnimationFrame(tick);
+  state.index = await (await fetch("places.json")).json();
+  const st = state.index.stats;
+  document.getElementById("about").innerHTML = `
+    <p>Measured from ${st.polygons} block-face sidewalks in four neighbourhoods (NYC Planimetric Database and 2015 Street Tree Census,
+    NYC Open Data): ${Math.round(100 * st.single_file / st.polygons)}% narrow to a single-file pinch of 0.7–1.3 m, mostly at street-tree pits.</p>
+    <p>Buildings, sidewalks and trees around the Two Bridges pinch are real (NYC building footprints with roof heights). Inside the pinch the
+    walkway follows the simulator, which narrows both edges by the measured amount; the real tree pit there is drawn as that obstruction.</p>
+    <p>People: Microsoft Rocketbox avatars and motion-captured walk cycles (MIT licence). Robots plan with heterogeneous world models;
+    pedestrians do not communicate.</p>`;
+  await pickScenario(state.index.places[0].name);
+})();
+</script>

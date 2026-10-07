@@ -1,0 +1,54 @@
+{
+ "stats": {
+  "polygons": 544,
+  "single_file": 182
+ },
+ "places": [
+  {
+   "name": "two_bridges",
+   "title": "Two Bridges (real block)",
+   "wide": 2.93,
+   "pinch": 1.0,
+   "length": 3.38,
+   "source": "measured at this sidewalk",
+   "episodes": "two_bridges.json",
+   "scene": "scene.json"
+  },
+  {
+   "name": "nyc1",
+   "title": "NYC1",
+   "wide": 2.67,
+   "pinch": 1.17,
+   "length": 2.83,
+   "source": "cluster of 73 measured pinches (40%)",
+   "episodes": "nyc1.json"
+  },
+  {
+   "name": "nyc2",
+   "title": "NYC2",
+   "wide": 2.95,
+   "pinch": 0.81,
+   "length": 3.09,
+   "source": "cluster of 58 measured pinches (32%)",
+   "episodes": "nyc2.json"
+  },
+  {
+   "name": "nyc3",
+   "title": "NYC3",
+   "wide": 3.8,
+   "pinch": 1.0,
+   "length": 3.1,
+   "source": "cluster of 45 measured pinches (25%)",
+   "episodes": "nyc3.json"
+  },
+  {
+   "name": "nyc4",
+   "title": "NYC4",
+   "wide": 2.13,
+   "pinch": 1.04,
+   "length": 12.0,
+   "source": "cluster of 6 measured pinches (3%)",
+   "episodes": "nyc4.json"
+  }
+ ]
+}

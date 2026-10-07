@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HETERO-WORLD | Architecture Flow</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  </head>
+  <body class="page-shell">
+    <header class="site-header small">
+      <div class="container nav">
+        <div class="brand">HETERO-WORLD</div>
+        <nav>
+          <a href="index.html">Home</a>
+          <a href="architecture.html">Flow</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container content-page">
+      <section>
+        <span class="eyebrow">System design</span>
+        <h1>Mathematical architecture and flow design</h1>
+        <p>
+          The system is built around a single idea: each agent predicts a physical joint future, not a latent
+          embedding, and all agents fuse those predictions in a common measure space.
+        </p>
+      </section>
+
+      <section class="architecture-steps">
+        <div class="step-box">
+          <strong>1. Observation</strong>
+          <p>Agent $i$ receives a local observation $o_t^i$ and its own route context.</p>
+        </div>
+        <div class="step-box">
+          <strong>2. World-model rollouts</strong>
+          <p>Model $\mathcal{W}_i$ produces $N$ joint rollouts in the physical trajectory space $\mathcal{M}$.</p>
+        </div>
+        <div class="step-box">
+          <strong>3. Empirical measure</strong>
+          <p>These are compressed into $\mu_i = \frac{1}{N} \sum_n \delta_{x_i^{(n)}}$.</p>
+        </div>
+        <div class="step-box">
+          <strong>4. Broadcast</strong>
+          <p>Agents exchange trajectory samples and trust weights without sharing model parameters or latents.</p>
+        </div>
+        <div class="step-box">
+          <strong>5. Entropic barycenter</strong>
+          <p>The common belief is the minimiser of $\sum_i \alpha_i W_2^2(\mu_i, \nu)$.</p>
+        </div>
+        <div class="step-box">
+          <strong>6. Deterministic selector</strong>
+          <p>Every agent scores the barycenter atoms with the same shared objective and picks the minimiser.</p>
+        </div>
+        <div class="step-box">
+          <strong>7. MPC tracking</strong>
+          <p>Each agent tracks the selected plan with a receding-horizon primitive controller.</p>
+        </div>
+      </section>
+
+      <section class="equation-panel">
+        <h2>Core equations</h2>
+        <div class="equation">\[\nu^\star = \arg\min_{\nu\in\mathcal{P}_2(\mathcal{M})} \sum_{i=1}^{M} \alpha_i W_2^2(\mu_i, \nu)\]</div>
+        <div class="equation">\[P_{ab}^{\star} = \exp\left(\frac{f_a + g_b - \widetilde{C}_{ab}}{\varepsilon}\right)\]</div>
+        <div class="equation">\[J(y) = \lambda_c \sum_{h,j<k}(2r+m-\|y_{h,j}-y_{h,k}\|)_+^2 + \lambda_\tau \overline{\|y-\mathrm{shift}(\hat y_{t-1})\|^2}\]</div>
+      </section>
+
+      <section class="equation-panel">
+        <h2>Engineering interpretation</h2>
+        <ul>
+          <li>Latent-space heterogeneity is treated as a non-issue because the shared object is the physical trajectory measure.</li>
+          <li>Consensus is reached by deterministic fusion; no negotiation, no optimisation over hidden weights, no gradient exchange.</li>
+          <li>The communication payload scales with the number of sampled trajectories, not with model parameter count.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Research-grade architecture flow for HETERO-WORLD</p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        if (window.katex && window.renderMathInElement) {
+          renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });
+        }
+      });
+    </script>
+  </body>
+</html>

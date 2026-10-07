@@ -1,0 +1,16 @@
+{
+  "id": "popsensharma/hw-ethucy-forecast-v2",
+  "title": "hw-ethucy-forecast-v2",
+  "code_file": "run_ethucy.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": false,
+  "dataset_sources": [
+    "popsensharma/hetero-world-ethucy"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "machine_shape": "NvidiaTeslaT4"
+}

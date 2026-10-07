@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HETERO-WORLD | Research Hub</title>
+    <meta name="description" content="Research-grade overview of the HETERO-WORLD architecture, mathematical formulation, and experiments." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <div class="brand">HETERO-WORLD</div>
+        <nav>
+          <a href="#overview">Overview</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#math">Math</a>
+          <a href="#results">Results</a>
+          <a href="#paper">Paper</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="eyebrow">Zero-shot multi-agent coordination</span>
+            <h1>Consensus across heterogeneous world models via entropic optimal transport.</h1>
+            <p>
+              HETERO-WORLD lets agents with incompatible latent spaces agree on a shared physical future
+              without aligning model internals, exchanging weights, or training together.
+            </p>
+            <div class="cta-row">
+              <a class="btn primary" href="#architecture">View architecture</a>
+              <a class="btn secondary" href="architecture.html">Open system flow</a>
+            </div>
+          </div>
+          <div class="hero-panel">
+            <div class="panel-metric">
+              <span>completion</span>
+              <strong>81%</strong>
+              <small>of 100 bottleneck episodes</small>
+            </div>
+            <div class="panel-metric">
+              <span>collision rate</span>
+              <strong>0%</strong>
+              <small>with no latent alignment</small>
+            </div>
+            <div class="panel-metric">
+              <span>payload</span>
+              <strong>161 KB/s</strong>
+              <small>per agent</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview" class="section">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Overview</span>
+            <h2>From black-box trajectory beliefs to a single safe plan</h2>
+          </div>
+          <div class="cards">
+            <article class="card">
+              <h3>Private models</h3>
+              <p>Each agent runs a different learned predictor, with a different latent dimension and architecture.</p>
+            </article>
+            <article class="card">
+              <h3>Joint future beliefs</h3>
+              <p>Every model emits sampled joint trajectories in a common physical coordinate frame.</p>
+            </article>
+            <article class="card">
+              <h3>Wasserstein consensus</h3>
+              <p>Agents fuse the empirical measures with an entropic barycenter and agree on one deterministic plan.</p>
+            </article>
+            <article class="card">
+              <h3>Safe execution</h3>
+              <p>A shared selection criterion resolves conflicts, preserves temporal consistency, and respects safety margins.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="architecture" class="section dark">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">System architecture</span>
+            <h2>Architecture flow</h2>
+          </div>
+          <div class="architecture-flow">
+            <div class="node">Local observation</div>
+            <div class="arrow">→</div>
+            <div class="node">Private world model</div>
+            <div class="arrow">→</div>
+            <div class="node">Joint trajectory samples</div>
+            <div class="arrow">→</div>
+            <div class="node">Broadcast support</div>
+            <div class="arrow">→</div>
+            <div class="node">Entropic Wasserstein barycenter</div>
+            <div class="arrow">→</div>
+            <div class="node">Deterministic plan selection</div>
+            <div class="arrow">→</div>
+            <div class="node">MPC tracking</div>
+          </div>
+          <p class="note">
+            The design never aligns latent spaces. It only projects each model’s output into the common physical
+            space of joint trajectories and fuses those measures.
+          </p>
+        </div>
+      </section>
+
+      <section id="math" class="section">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Mathematical architecture</span>
+            <h2>Core formulation</h2>
+          </div>
+          <div class="math-block">
+            <div class="equation">\[\nu^\star \in \arg\min_{\nu \in \mathcal{P}_2(\mathcal{M})} \sum_{i=1}^{M} \alpha_i W_2^2(\mu_i, \nu)\]</div>
+            <p>Each agent maintains a predictive empirical measure over joint futures in a common space \(\mathcal{M}\), where the latent dimension is irrelevant once the prediction is expressed in physical coordinates.</p>
+          </div>
+          <div class="math-block">
+            <div class="equation">\[\mu_i = \frac{1}{N}\sum_{n=1}^{N} \delta_{x_i^{(n)}}, \quad x_i^{(n)} \in (\mathbb{R}^2)^{H \times M}\]</div>
+            <p>Each atom is a complete joint trajectory hypothesis, including the motion of all agents in the scene.</p>
+          </div>
+          <div class="math-block">
+            <div class="equation">\[P_{ab}^{\star} = \exp\left(\frac{f_a + g_b - \widetilde{C}_{ab}}{\varepsilon}\right)\]</div>
+            <p>The barycentric consensus is solved with entropy-regularized optimal transport and the Sinkhorn updates in the dual domain.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="results" class="section">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Measured results</span>
+            <h2>Research outputs from the benchmark</h2>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-box">
+              <span>Deadlock rate</span>
+              <strong>16%</strong>
+              <small>HETERO-WORLD</small>
+            </div>
+            <div class="stat-box">
+              <span>Collision rate</span>
+              <strong>0%</strong>
+              <small>HETERO-WORLD</small>
+            </div>
+            <div class="stat-box">
+              <span>Completion</span>
+              <strong>81%</strong>
+              <small>of 100 episodes</small>
+            </div>
+            <div class="stat-box">
+              <span>Bandwidth</span>
+              <strong>161 KB/s</strong>
+              <small>per agent</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="paper" class="section dark">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow">Paper and code</span>
+            <h2>Everything connected</h2>
+          </div>
+          <div class="links-grid">
+            <a class="link-card" href="../paper/main.tex">Paper source</a>
+            <a class="link-card" href="../scripts/run_benchmark.py">Benchmark runner</a>
+            <a class="link-card" href="../hetero_world/controllers.py">Controller implementation</a>
+            <a class="link-card" href="../hetero_world/sinkhorn.py">Sinkhorn barycenter</a>
+            <a class="link-card" href="../results/main/hetero_world.json">Saved benchmark result</a>
+            <a class="link-card" href="../README.md">Project readme</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>HETERO-WORLD research page • mathematical architecture + benchmark outputs + deployment-ready docs</p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        if (window.katex && window.renderMathInElement) {
+          renderMathInElement(document.body, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}] });
+        }
+      });
+    </script>
+  </body>
+</html>

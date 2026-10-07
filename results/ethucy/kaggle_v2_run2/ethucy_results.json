@@ -1,0 +1,863 @@
+{
+ "settings": {
+  "data": "data/ethucy",
+  "seeds": [
+   0,
+   1,
+   2
+  ],
+  "scenes": [
+   "eth",
+   "hotel",
+   "univ",
+   "zara1",
+   "zara2"
+  ],
+  "steps": 8000,
+  "k": 20,
+  "device": "cuda",
+  "out": "/kaggle/working/ethucy_results.json"
+ },
+ "results": {
+  "eth/seed0": {
+   "diffusion": {
+    "minADE_target": 1.4721293606600918,
+    "minFDE_target": 1.3774394989013672,
+    "ADEmean_target": 1.3665093222817222,
+    "FDEmean_target": 2.57664062164642,
+    "minADE_all": 1.5894913306603065,
+    "minFDE_all": 1.798803979223901,
+    "energy_all": 6.1224301516354735
+   },
+   "jepa": {
+    "minADE_target": 0.6910770961216518,
+    "minFDE_target": 1.2289282411009401,
+    "ADEmean_target": 1.3533383044567737,
+    "FDEmean_target": 2.6366100940075547,
+    "minADE_all": 0.902548360300588,
+    "minFDE_all": 1.6911749368185525,
+    "energy_all": 5.67208241892385
+   },
+   "rssm": {
+    "minADE_target": 0.9993520673814711,
+    "minFDE_target": 2.082976582286122,
+    "ADEmean_target": 1.0381181318681318,
+    "FDEmean_target": 2.1764084113823188,
+    "minADE_all": 1.0055826417692415,
+    "minFDE_all": 2.0913402431613797,
+    "energy_all": 5.840231759207589
+   },
+   "mixture": {
+    "minADE_target": 0.7130934746710809,
+    "minFDE_target": 1.1599045638199692,
+    "ADEmean_target": 1.2161848885672433,
+    "FDEmean_target": 2.394676292335594,
+    "minADE_all": 0.7918725694928851,
+    "minFDE_all": 1.411973848447695,
+    "energy_all": 4.860582121125945
+   },
+   "barycenter": {
+    "minADE_target": 0.7786031240945334,
+    "minFDE_target": 1.1188534956711988,
+    "ADEmean_target": 1.1209254002833104,
+    "FDEmean_target": 2.2558237432123542,
+    "minADE_all": 0.9114881871820806,
+    "minFDE_all": 1.4579303867214328,
+    "energy_all": 4.719387683239612
+   },
+   "cv": {
+    "minADE_target": 1.0754581702934516,
+    "minFDE_target": 2.2818901984246223,
+    "ADEmean_target": 1.0754581702934516,
+    "FDEmean_target": 2.281890156504872,
+    "minADE_all": 1.0754581074138263,
+    "minFDE_all": 2.2818901984246223,
+    "energy_all": 6.205263242616758
+   }
+  },
+  "hotel/seed0": {
+   "diffusion": {
+    "minADE_target": 1.4013056169476426,
+    "minFDE_target": 1.2006298501788324,
+    "ADEmean_target": 0.8859347898758941,
+    "FDEmean_target": 1.531374007936508,
+    "minADE_all": 1.5762282445615994,
+    "minFDE_all": 1.9785037952955304,
+    "energy_all": 6.705594960709064
+   },
+   "jepa": {
+    "minADE_target": 0.3011270330264953,
+    "minFDE_target": 0.5270063357245653,
+    "ADEmean_target": 0.6344418123352,
+    "FDEmean_target": 1.1639053229998826,
+    "minADE_all": 0.5454787251943335,
+    "minFDE_all": 0.9939981841403639,
+    "energy_all": 4.114155118427579
+   },
+   "rssm": {
+    "minADE_target": 0.30857209195270074,
+    "minFDE_target": 0.5826469109072323,
+    "ADEmean_target": 0.34144041273328996,
+    "FDEmean_target": 0.6599695433550511,
+    "minADE_all": 0.31927862143456787,
+    "minFDE_all": 0.6058660521543116,
+    "energy_all": 2.970993360680347
+   },
+   "mixture": {
+    "minADE_target": 0.25273966649819535,
+    "minFDE_target": 0.43382959198533444,
+    "ADEmean_target": 0.6291454318372428,
+    "FDEmean_target": 1.1338408684471595,
+    "minADE_all": 0.3129426737875369,
+    "minFDE_all": 0.5813744846939941,
+    "energy_all": 3.3864618108585267
+   },
+   "barycenter": {
+    "minADE_target": 0.5125736628558701,
+    "minFDE_target": 0.5022686836414767,
+    "ADEmean_target": 0.48143011107480616,
+    "FDEmean_target": 0.8876377574184484,
+    "minADE_all": 0.6483629269707472,
+    "minFDE_all": 0.9168480894619361,
+    "energy_all": 3.254147892109832
+   },
+   "cv": {
+    "minADE_target": 0.3193555400086724,
+    "minFDE_target": 0.6141975549428584,
+    "ADEmean_target": 0.3193555400086724,
+    "FDEmean_target": 0.6141975613166216,
+    "minADE_all": 0.31935554956931717,
+    "minFDE_all": 0.6141975549428584,
+    "energy_all": 3.1158562503263365
+   }
+  },
+  "univ/seed0": {
+   "diffusion": {
+    "minADE_target": 1.2886781062864836,
+    "minFDE_target": 1.0231780268719808,
+    "ADEmean_target": 1.0062301684884825,
+    "FDEmean_target": 1.798895474985218,
+    "minADE_all": 1.4332273670632674,
+    "minFDE_all": 1.612183845753447,
+    "energy_all": 5.679691185697841
+   },
+   "jepa": {
+    "minADE_target": 0.7981957821070476,
+    "minFDE_target": 1.440884527184921,
+    "ADEmean_target": 1.344530901087271,
+    "FDEmean_target": 2.482942737818916,
+    "minADE_all": 0.9939476910036735,
+    "minFDE_all": 1.8518287302407281,
+    "energy_all": 6.807496100040257
+   },
+   "rssm": {
+    "minADE_target": 0.5787060195505139,
+    "minFDE_target": 1.2834925874227872,
+    "ADEmean_target": 0.6210226098888354,
+    "FDEmean_target": 1.3843296315167068,
+    "minADE_all": 0.5934850228965378,
+    "minFDE_all": 1.320307561164893,
+    "energy_all": 4.219491734404879
+   },
+   "mixture": {
+    "minADE_target": 0.5078898812261756,
+    "minFDE_target": 0.9020368296551051,
+    "ADEmean_target": 0.9116276911491357,
+    "FDEmean_target": 1.7747467827297831,
+    "minADE_all": 0.5727517562595926,
+    "minFDE_all": 1.1601620365456107,
+    "energy_all": 4.320100203804348
+   },
+   "barycenter": {
+    "minADE_target": 0.6169366084051209,
+    "minFDE_target": 0.7838719440159206,
+    "ADEmean_target": 0.7875223758715938,
+    "FDEmean_target": 1.578938163229041,
+    "minADE_all": 0.7474598907618131,
+    "minFDE_all": 1.1531111737188318,
+    "energy_all": 3.971708583371075
+   },
+   "cv": {
+    "minADE_target": 0.5937624822300221,
+    "minFDE_target": 1.3170253612377025,
+    "ADEmean_target": 0.5937624822300221,
+    "FDEmean_target": 1.3170253120950646,
+    "minADE_all": 0.59376253137266,
+    "minFDE_all": 1.3170252629524268,
+    "energy_all": 4.260287126673209
+   }
+  },
+  "zara1/seed0": {
+   "diffusion": {
+    "minADE_target": 1.2890871854306076,
+    "minFDE_target": 1.0485079430157542,
+    "ADEmean_target": 1.03350648572368,
+    "FDEmean_target": 1.8039548935428742,
+    "minADE_all": 1.4644038357435138,
+    "minFDE_all": 1.8404831262922043,
+    "energy_all": 7.149653721341456
+   },
+   "jepa": {
+    "minADE_target": 0.5529309841084764,
+    "minFDE_target": 0.9921629602921231,
+    "ADEmean_target": 0.9644258924979711,
+    "FDEmean_target": 1.811504147048717,
+    "minADE_all": 0.9801819530933944,
+    "minFDE_all": 1.8142577432007458,
+    "energy_all": 7.824584054218286
+   },
+   "rssm": {
+    "minADE_target": 0.3985991737028941,
+    "minFDE_target": 0.8758244020627188,
+    "ADEmean_target": 0.4375422187086277,
+    "FDEmean_target": 0.9691389598749287,
+    "minADE_all": 0.42091147563655834,
+    "minFDE_all": 0.9307388490246188,
+    "energy_all": 4.372314841718949
+   },
+   "mixture": {
+    "minADE_target": 0.36017993391066133,
+    "minFDE_target": 0.6757282142121035,
+    "ADEmean_target": 0.7343768701083794,
+    "FDEmean_target": 1.3773018022546946,
+    "minADE_all": 0.42258279594784076,
+    "minFDE_all": 0.9202723851228206,
+    "energy_all": 4.8784637515937535
+   },
+   "barycenter": {
+    "minADE_target": 0.5285492218613422,
+    "minFDE_target": 0.5825761429117977,
+    "ADEmean_target": 0.6104631205366099,
+    "FDEmean_target": 1.1853277614444544,
+    "minADE_all": 0.7296637549667488,
+    "minFDE_all": 1.1316702118956172,
+    "energy_all": 4.383618178310945
+   },
+   "cv": {
+    "minADE_target": 0.4272228339734426,
+    "minFDE_target": 0.9523768319743598,
+    "ADEmean_target": 0.4272228339734426,
+    "FDEmean_target": 0.9523768384509257,
+    "minADE_all": 0.42814618338955684,
+    "minFDE_all": 0.9541267765802924,
+    "energy_all": 4.5405081666386184
+   }
+  },
+  "zara2/seed0": {
+   "diffusion": {
+    "minADE_target": 1.6105034700706726,
+    "minFDE_target": 1.4360200342994858,
+    "ADEmean_target": 1.0145836292789672,
+    "FDEmean_target": 1.827221912700311,
+    "minADE_all": 1.6827184209162007,
+    "minFDE_all": 2.1602381904718233,
+    "energy_all": 9.169244162725716
+   },
+   "jepa": {
+    "minADE_target": 0.40135885325785214,
+    "minFDE_target": 0.7335742011288096,
+    "ADEmean_target": 0.8320099122229768,
+    "FDEmean_target": 1.5960521652815507,
+    "minADE_all": 0.9436708663320783,
+    "minFDE_all": 1.7514939658331186,
+    "energy_all": 10.425377225149706
+   },
+   "rssm": {
+    "minADE_target": 0.34114127691627155,
+    "minFDE_target": 0.7422463770445228,
+    "ADEmean_target": 0.37592212125129504,
+    "FDEmean_target": 0.8260545559542635,
+    "minADE_all": 0.3703279330645721,
+    "minFDE_all": 0.8100349295562899,
+    "energy_all": 5.32080608438921
+   },
+   "mixture": {
+    "minADE_target": 0.2963816764592721,
+    "minFDE_target": 0.5650483989876942,
+    "ADEmean_target": 0.7195703320898582,
+    "FDEmean_target": 1.3534853975583252,
+    "minADE_all": 0.3726092996129328,
+    "minFDE_all": 0.8111909311233236,
+    "energy_all": 5.959572801412463
+   },
+   "barycenter": {
+    "minADE_target": 0.5879923636538124,
+    "minFDE_target": 0.5962845137478333,
+    "ADEmean_target": 0.5493683601999041,
+    "FDEmean_target": 1.0863338357502637,
+    "minADE_all": 0.7795028108832397,
+    "minFDE_all": 1.1955566538570295,
+    "energy_all": 5.444020283242369
+   },
+   "cv": {
+    "minADE_target": 0.3239369268949867,
+    "minFDE_target": 0.7244143786164104,
+    "ADEmean_target": 0.3239369268949867,
+    "FDEmean_target": 0.7244143745822551,
+    "minADE_all": 0.32215098011513854,
+    "minFDE_all": 0.7197927203880349,
+    "energy_all": 5.361608294182018
+   }
+  },
+  "eth/seed1": {
+   "diffusion": {
+    "minADE_target": 1.436775920155284,
+    "minFDE_target": 1.3575872903341775,
+    "ADEmean_target": 1.334778838105254,
+    "FDEmean_target": 2.581443870460594,
+    "minADE_all": 1.540258260873648,
+    "minFDE_all": 1.7780239817860362,
+    "energy_all": 6.019177447308551
+   },
+   "jepa": {
+    "minADE_target": 0.6312308259062714,
+    "minFDE_target": 1.0913717248937587,
+    "ADEmean_target": 1.1761089786068424,
+    "FDEmean_target": 2.3149678995321086,
+    "minADE_all": 0.8668496687333662,
+    "minFDE_all": 1.5931947729089757,
+    "energy_all": 5.443035419170673
+   },
+   "rssm": {
+    "minADE_target": 0.9819763518951752,
+    "minFDE_target": 2.0336427793398006,
+    "ADEmean_target": 1.0239472232022129,
+    "FDEmean_target": 2.1340844290597096,
+    "minADE_all": 0.9957195952698424,
+    "minFDE_all": 2.0650948325356286,
+    "energy_all": 5.8036130129635985
+   },
+   "mixture": {
+    "minADE_target": 0.7178435902019124,
+    "minFDE_target": 1.1728748279613452,
+    "ADEmean_target": 1.1703664339505708,
+    "FDEmean_target": 2.3220386714725705,
+    "minADE_all": 0.7905599363557585,
+    "minFDE_all": 1.4303179311228322,
+    "energy_all": 4.8266487540779535
+   },
+   "barycenter": {
+    "minADE_target": 0.7501272683615213,
+    "minFDE_target": 1.0216546739850725,
+    "ADEmean_target": 1.0816266405713426,
+    "FDEmean_target": 2.1917654184194713,
+    "minADE_all": 0.875070550939539,
+    "minFDE_all": 1.3691485059130324,
+    "energy_all": 4.6236570588834995
+   },
+   "cv": {
+    "minADE_target": 1.0754581702934516,
+    "minFDE_target": 2.2818901984246223,
+    "ADEmean_target": 1.0754581702934516,
+    "FDEmean_target": 2.281890156504872,
+    "minADE_all": 1.0754581074138263,
+    "minFDE_all": 2.2818901984246223,
+    "energy_all": 6.205263242616758
+   }
+  },
+  "hotel/seed1": {
+   "diffusion": {
+    "minADE_target": 1.35702123299378,
+    "minFDE_target": 1.2024597065988538,
+    "ADEmean_target": 0.8806649114852562,
+    "FDEmean_target": 1.5750356114896618,
+    "minADE_all": 1.5539289456959455,
+    "minFDE_all": 2.0110266358033755,
+    "energy_all": 6.716353159102183
+   },
+   "jepa": {
+    "minADE_target": 0.27390161831376947,
+    "minFDE_target": 0.4696256084649286,
+    "ADEmean_target": 0.5694463119570573,
+    "FDEmean_target": 1.047495779039069,
+    "minADE_all": 0.5003581991171777,
+    "minFDE_all": 0.9049616202575123,
+    "energy_all": 3.8634162208091842
+   },
+   "rssm": {
+    "minADE_target": 0.302293498613681,
+    "minFDE_target": 0.5682782688634835,
+    "ADEmean_target": 0.337562430373011,
+    "FDEmean_target": 0.6519730519332184,
+    "minADE_all": 0.3178017025902158,
+    "minFDE_all": 0.6034537102644306,
+    "energy_all": 2.962028331326363
+   },
+   "mixture": {
+    "minADE_target": 0.24027590644090696,
+    "minFDE_target": 0.4100484441695058,
+    "ADEmean_target": 0.6215501241915009,
+    "FDEmean_target": 1.1317340847643196,
+    "minADE_all": 0.30617641426666437,
+    "minFDE_all": 0.5696761562312357,
+    "energy_all": 3.3475517202837826
+   },
+   "barycenter": {
+    "minADE_target": 0.4951146698635423,
+    "minFDE_target": 0.49869019803945086,
+    "ADEmean_target": 0.46819221923624166,
+    "FDEmean_target": 0.8699483082706767,
+    "minADE_all": 0.6376681730163625,
+    "minFDE_all": 0.9089970154471465,
+    "energy_all": 3.245147016711701
+   },
+   "cv": {
+    "minADE_target": 0.3193555400086724,
+    "minFDE_target": 0.6141975549428584,
+    "ADEmean_target": 0.3193555400086724,
+    "FDEmean_target": 0.6141975613166216,
+    "minADE_all": 0.31935554956931717,
+    "minFDE_all": 0.6141975549428584,
+    "energy_all": 3.1158562503263365
+   }
+  },
+  "univ/seed1": {
+   "diffusion": {
+    "minADE_target": 1.2464670129060362,
+    "minFDE_target": 1.0399318578354595,
+    "ADEmean_target": 0.9914192899989621,
+    "FDEmean_target": 1.8495084851644272,
+    "minADE_all": 1.4006241753865363,
+    "minFDE_all": 1.6304568722244237,
+    "energy_all": 5.651383109714674
+   },
+   "jepa": {
+    "minADE_target": 0.7099661773337642,
+    "minFDE_target": 1.281621567485029,
+    "ADEmean_target": 1.2111156912049617,
+    "FDEmean_target": 2.2614554928888637,
+    "minADE_all": 0.8998982403397369,
+    "minFDE_all": 1.7002022416119413,
+    "energy_all": 6.197022074086655
+   },
+   "rssm": {
+    "minADE_target": 0.5796920297226468,
+    "minFDE_target": 1.2948398559373742,
+    "ADEmean_target": 0.6235741140761814,
+    "FDEmean_target": 1.3966872112378599,
+    "minADE_all": 0.5924841655049347,
+    "minFDE_all": 1.3234694722002063,
+    "energy_all": 4.220530118343335
+   },
+   "mixture": {
+    "minADE_target": 0.4989037751767562,
+    "minFDE_target": 0.9072235156564513,
+    "ADEmean_target": 0.8403316995371943,
+    "FDEmean_target": 1.6525012521544133,
+    "minADE_all": 0.5657453122346298,
+    "minFDE_all": 1.1760960208812965,
+    "energy_all": 4.176876147972021
+   },
+   "barycenter": {
+    "minADE_target": 0.58544829118271,
+    "minFDE_target": 0.738613994801102,
+    "ADEmean_target": 0.7465039988838724,
+    "FDEmean_target": 1.5225557213628158,
+    "minADE_all": 0.7161771679078132,
+    "minFDE_all": 1.114521425895261,
+    "energy_all": 3.8833489410351247
+   },
+   "cv": {
+    "minADE_target": 0.5937624822300221,
+    "minFDE_target": 1.3170253612377025,
+    "ADEmean_target": 0.5937624822300221,
+    "FDEmean_target": 1.3170253120950646,
+    "minADE_all": 0.59376253137266,
+    "minFDE_all": 1.3170252629524268,
+    "energy_all": 4.260287126673209
+   }
+  },
+  "zara1/seed1": {
+   "diffusion": {
+    "minADE_target": 1.2399648462370012,
+    "minFDE_target": 1.060143423809058,
+    "ADEmean_target": 1.0159557841224864,
+    "FDEmean_target": 1.854204958282626,
+    "minADE_all": 1.4131090523633973,
+    "minFDE_all": 1.8349637450912812,
+    "energy_all": 7.0688889119742475
+   },
+   "jepa": {
+    "minADE_target": 0.5547938703073912,
+    "minFDE_target": 0.9775426731854424,
+    "ADEmean_target": 0.9694138560918475,
+    "FDEmean_target": 1.8165499633763156,
+    "minADE_all": 1.0588795932322892,
+    "minFDE_all": 1.9516259599824914,
+    "energy_all": 8.38520008598807
+   },
+   "rssm": {
+    "minADE_target": 0.3969556528360208,
+    "minFDE_target": 0.8729883446555793,
+    "ADEmean_target": 0.4383145556587517,
+    "FDEmean_target": 0.9723741486036109,
+    "minADE_all": 0.42044094705824536,
+    "minFDE_all": 0.9307395387788783,
+    "energy_all": 4.367285775409692
+   },
+   "mixture": {
+    "minADE_target": 0.3586270861795681,
+    "minFDE_target": 0.678377984537536,
+    "ADEmean_target": 0.7241406149289401,
+    "FDEmean_target": 1.3743649176709316,
+    "minADE_all": 0.42163017164466743,
+    "minFDE_all": 0.9181143788206557,
+    "energy_all": 4.939186122097669
+   },
+   "barycenter": {
+    "minADE_target": 0.5100551088718486,
+    "minFDE_target": 0.5639210929287715,
+    "ADEmean_target": 0.6097971725140039,
+    "FDEmean_target": 1.1994358104841818,
+    "minADE_all": 0.7332035155369188,
+    "minFDE_all": 1.1697563194054699,
+    "energy_all": 4.488685866972789
+   },
+   "cv": {
+    "minADE_target": 0.4272228339734426,
+    "minFDE_target": 0.9523768319743598,
+    "ADEmean_target": 0.4272228339734426,
+    "FDEmean_target": 0.9523768384509257,
+    "minADE_all": 0.42814618338955684,
+    "minFDE_all": 0.9541267765802924,
+    "energy_all": 4.5405081666386184
+   }
+  },
+  "zara2/seed1": {
+   "diffusion": {
+    "minADE_target": 1.599422967655808,
+    "minFDE_target": 1.46660108743787,
+    "ADEmean_target": 1.054318384793406,
+    "FDEmean_target": 1.9413218083518815,
+    "minADE_all": 1.6651607461790547,
+    "minFDE_all": 2.174914437824901,
+    "energy_all": 9.242631381013874
+   },
+   "jepa": {
+    "minADE_target": 0.3530031536638031,
+    "minFDE_target": 0.6383270270126523,
+    "ADEmean_target": 0.7119195867109218,
+    "FDEmean_target": 1.3780710046061404,
+    "minADE_all": 0.8889393693501171,
+    "minFDE_all": 1.6565364240591498,
+    "energy_all": 9.93621342976888
+   },
+   "rssm": {
+    "minADE_target": 0.34419730931974307,
+    "minFDE_target": 0.7455647596046202,
+    "ADEmean_target": 0.38189280940796516,
+    "FDEmean_target": 0.8354472103861181,
+    "minADE_all": 0.37106234232584634,
+    "minFDE_all": 0.8105599419517969,
+    "energy_all": 5.315641136621259
+   },
+   "mixture": {
+    "minADE_target": 0.29357931383975266,
+    "minFDE_target": 0.5563485755533131,
+    "ADEmean_target": 0.7022519594118276,
+    "FDEmean_target": 1.338552409783636,
+    "minADE_all": 0.372674560546875,
+    "minFDE_all": 0.8081633193440445,
+    "energy_all": 5.889124854486404
+   },
+   "barycenter": {
+    "minADE_target": 0.5775742229067936,
+    "minFDE_target": 0.5988845354005972,
+    "ADEmean_target": 0.5328857436397959,
+    "FDEmean_target": 1.071086542094016,
+    "minADE_all": 0.7692925514505196,
+    "minFDE_all": 1.191552812476247,
+    "energy_all": 5.402366116647995
+   },
+   "cv": {
+    "minADE_target": 0.3239369268949867,
+    "minFDE_target": 0.7244143786164104,
+    "ADEmean_target": 0.3239369268949867,
+    "FDEmean_target": 0.7244143745822551,
+    "minADE_all": 0.32215098011513854,
+    "minFDE_all": 0.7197927203880349,
+    "energy_all": 5.361608294182018
+   }
+  },
+  "eth/seed2": {
+   "diffusion": {
+    "minADE_target": 1.4273924355978493,
+    "minFDE_target": 1.3413194300054194,
+    "ADEmean_target": 1.3503572233430632,
+    "FDEmean_target": 2.6095589438637536,
+    "minADE_all": 1.532712160885989,
+    "minFDE_all": 1.7503311660263565,
+    "energy_all": 6.023657830206902
+   },
+   "jepa": {
+    "minADE_target": 0.6404206202580378,
+    "minFDE_target": 1.0928962833278781,
+    "ADEmean_target": 1.187183799324455,
+    "FDEmean_target": 2.3352191631610575,
+    "minADE_all": 0.8720897632640797,
+    "minFDE_all": 1.6061481433910327,
+    "energy_all": 5.417380196707589
+   },
+   "rssm": {
+    "minADE_target": 0.9980508154565162,
+    "minFDE_target": 2.063367654989054,
+    "ADEmean_target": 1.0405655326424064,
+    "FDEmean_target": 2.1630565517551297,
+    "minADE_all": 1.007614219581688,
+    "minFDE_all": 2.0910416068611566,
+    "energy_all": 5.8754575959928745
+   },
+   "mixture": {
+    "minADE_target": 0.7083448263315054,
+    "minFDE_target": 1.1647220653492016,
+    "ADEmean_target": 1.1829800029377362,
+    "FDEmean_target": 2.336311256492531,
+    "minADE_all": 0.8003116439987015,
+    "minFDE_all": 1.4489173889160156,
+    "energy_all": 4.823209993131868
+   },
+   "barycenter": {
+    "minADE_target": 0.7377755301339286,
+    "minFDE_target": 1.007361820765904,
+    "ADEmean_target": 1.0816463218940484,
+    "FDEmean_target": 2.1870120541080014,
+    "minADE_all": 0.8790626316280156,
+    "minFDE_all": 1.3980371663858602,
+    "energy_all": 4.586801549890539
+   },
+   "cv": {
+    "minADE_target": 1.0754581702934516,
+    "minFDE_target": 2.2818901984246223,
+    "ADEmean_target": 1.0754581702934516,
+    "FDEmean_target": 2.281890156504872,
+    "minADE_all": 1.0754581074138263,
+    "minFDE_all": 2.2818901984246223,
+    "energy_all": 6.205263242616758
+   }
+  },
+  "hotel/seed2": {
+   "diffusion": {
+    "minADE_target": 1.3405613592493604,
+    "minFDE_target": 1.1706508040527752,
+    "ADEmean_target": 0.8663968091819718,
+    "FDEmean_target": 1.5457203800516917,
+    "minADE_all": 1.5310650843825058,
+    "minFDE_all": 1.959406802528783,
+    "energy_all": 6.570349926737417
+   },
+   "jepa": {
+    "minADE_target": 0.2919055999271453,
+    "minFDE_target": 0.5122726937583216,
+    "ADEmean_target": 0.6225209120620562,
+    "FDEmean_target": 1.1485063748849664,
+    "minADE_all": 0.5517233176936481,
+    "minFDE_all": 1.0043090208431233,
+    "energy_all": 4.120791582634973
+   },
+   "rssm": {
+    "minADE_target": 0.3022923863920054,
+    "minFDE_target": 0.5659802786588868,
+    "ADEmean_target": 0.33642296085979106,
+    "FDEmean_target": 0.6448244686015168,
+    "minADE_all": 0.31779458947050243,
+    "minFDE_all": 0.6028595544341812,
+    "energy_all": 2.97054974676274
+   },
+   "mixture": {
+    "minADE_target": 0.24947863573219345,
+    "minFDE_target": 0.4247235048783254,
+    "ADEmean_target": 0.6189424392075566,
+    "FDEmean_target": 1.1278374463992011,
+    "minADE_all": 0.3117324778111457,
+    "minFDE_all": 0.5821092712351353,
+    "energy_all": 3.3804107130619516
+   },
+   "barycenter": {
+    "minADE_target": 0.4926621541443126,
+    "minFDE_target": 0.4761480269276707,
+    "ADEmean_target": 0.47944343458540556,
+    "FDEmean_target": 0.8923495108621162,
+    "minADE_all": 0.645073778348459,
+    "minFDE_all": 0.9254180474787228,
+    "energy_all": 3.2588694738963295
+   },
+   "cv": {
+    "minADE_target": 0.3193555400086724,
+    "minFDE_target": 0.6141975549428584,
+    "ADEmean_target": 0.3193555400086724,
+    "FDEmean_target": 0.6141975613166216,
+    "minADE_all": 0.31935554956931717,
+    "minFDE_all": 0.6141975549428584,
+    "energy_all": 3.1158562503263365
+   }
+  },
+  "univ/seed2": {
+   "diffusion": {
+    "minADE_target": 1.2421595869816828,
+    "minFDE_target": 1.026789027903583,
+    "ADEmean_target": 0.9972494128437626,
+    "FDEmean_target": 1.8360791782250152,
+    "minADE_all": 1.3937284804388712,
+    "minFDE_all": 1.577587870967945,
+    "energy_all": 5.608997977682166
+   },
+   "jepa": {
+    "minADE_target": 0.7019690361575804,
+    "minFDE_target": 1.2700847926731078,
+    "ADEmean_target": 1.2123963852051567,
+    "FDEmean_target": 2.2721609216957277,
+    "minADE_all": 0.9571960498361388,
+    "minFDE_all": 1.7755027930709666,
+    "energy_all": 6.482911630529136
+   },
+   "rssm": {
+    "minADE_target": 0.5751896303824948,
+    "minFDE_target": 1.277624465033244,
+    "ADEmean_target": 0.6180398790540711,
+    "FDEmean_target": 1.3787061534642022,
+    "minADE_all": 0.5873142371431065,
+    "minFDE_all": 1.3076959017202283,
+    "energy_all": 4.178495889316626
+   },
+   "mixture": {
+    "minADE_target": 0.49964004246317056,
+    "minFDE_target": 0.8950493116885567,
+    "ADEmean_target": 0.837183708154061,
+    "FDEmean_target": 1.6366155381747873,
+    "minADE_all": 0.5595328166672957,
+    "minFDE_all": 1.1442988176084754,
+    "energy_all": 4.1489493205735455
+   },
+   "barycenter": {
+    "minADE_target": 0.5845775082107519,
+    "minFDE_target": 0.7159669172744628,
+    "ADEmean_target": 0.7386324662901161,
+    "FDEmean_target": 1.5039305756057517,
+    "minADE_all": 0.7309970702142147,
+    "minFDE_all": 1.1211293538411458,
+    "energy_all": 3.8756005721775613
+   },
+   "cv": {
+    "minADE_target": 0.5937624822300221,
+    "minFDE_target": 1.3170253612377025,
+    "ADEmean_target": 0.5937624822300221,
+    "FDEmean_target": 1.3170253120950646,
+    "minADE_all": 0.59376253137266,
+    "minFDE_all": 1.3170252629524268,
+    "energy_all": 4.260287126673209
+   }
+  },
+  "zara1/seed2": {
+   "diffusion": {
+    "minADE_target": 1.2652452821844908,
+    "minFDE_target": 1.07798109232671,
+    "ADEmean_target": 1.0644140955952512,
+    "FDEmean_target": 1.9210462456850528,
+    "minADE_all": 1.4335780572810277,
+    "minFDE_all": 1.8307458751270442,
+    "energy_all": 7.1246764178187005
+   },
+   "jepa": {
+    "minADE_target": 0.5475837095484062,
+    "minFDE_target": 0.9748708857745185,
+    "ADEmean_target": 0.9428737005677409,
+    "FDEmean_target": 1.7769771666599656,
+    "minADE_all": 1.0390992528918643,
+    "minFDE_all": 1.9215019433324325,
+    "energy_all": 8.031031364091183
+   },
+   "rssm": {
+    "minADE_target": 0.39591389641494623,
+    "minFDE_target": 0.8737613907896602,
+    "ADEmean_target": 0.4376021334189915,
+    "FDEmean_target": 0.973317939680582,
+    "minADE_all": 0.4200409001122104,
+    "minFDE_all": 0.9304813407677746,
+    "energy_all": 4.377305016250481
+   },
+   "mixture": {
+    "minADE_target": 0.3601440164957872,
+    "minFDE_target": 0.6796862645950706,
+    "ADEmean_target": 0.7236254842657792,
+    "FDEmean_target": 1.378470326927198,
+    "minADE_all": 0.4217238859328835,
+    "minFDE_all": 0.9197466320821506,
+    "energy_all": 4.885719105019432
+   },
+   "barycenter": {
+    "minADE_target": 0.5155981886366632,
+    "minFDE_target": 0.5757789101786849,
+    "ADEmean_target": 0.610599098464629,
+    "FDEmean_target": 1.2026040849539945,
+    "minADE_all": 0.7301195432860499,
+    "minFDE_all": 1.1559058595796594,
+    "energy_all": 4.429226219552887
+   },
+   "cv": {
+    "minADE_target": 0.4272228339734426,
+    "minFDE_target": 0.9523768319743598,
+    "ADEmean_target": 0.4272228339734426,
+    "FDEmean_target": 0.9523768384509257,
+    "minADE_all": 0.42814618338955684,
+    "minFDE_all": 0.9541267765802924,
+    "energy_all": 4.5405081666386184
+   }
+  },
+  "zara2/seed2": {
+   "diffusion": {
+    "minADE_target": 1.5827656334426803,
+    "minFDE_target": 1.4658454346374408,
+    "ADEmean_target": 1.054005784875447,
+    "FDEmean_target": 1.9376352507047443,
+    "minADE_all": 1.6507656284596917,
+    "minFDE_all": 2.153029041968021,
+    "energy_all": 9.116871093130353
+   },
+   "jepa": {
+    "minADE_target": 0.34455647718684523,
+    "minFDE_target": 0.6127961470189232,
+    "ADEmean_target": 0.6914274480338831,
+    "FDEmean_target": 1.3340221530894942,
+    "minADE_all": 0.9518099699326982,
+    "minFDE_all": 1.7618808023417258,
+    "energy_all": 10.401624059273708
+   },
+   "rssm": {
+    "minADE_target": 0.3466369455437571,
+    "minFDE_target": 0.7534764749749663,
+    "ADEmean_target": 0.3825681386260212,
+    "FDEmean_target": 0.8389752312158368,
+    "minADE_all": 0.37000903857339257,
+    "minFDE_all": 0.8070336374131153,
+    "energy_all": 5.302659359075091
+   },
+   "mixture": {
+    "minADE_target": 0.2963242893896732,
+    "minFDE_target": 0.5665152822452552,
+    "ADEmean_target": 0.6915027720068917,
+    "FDEmean_target": 1.316002248386441,
+    "minADE_all": 0.37105094680527945,
+    "minFDE_all": 0.8045773294774812,
+    "energy_all": 5.946565790063436
+   },
+   "barycenter": {
+    "minADE_target": 0.573995888576088,
+    "minFDE_target": 0.5903437871013196,
+    "ADEmean_target": 0.5204515126352585,
+    "FDEmean_target": 1.0447811178346171,
+    "minADE_all": 0.7775972731020648,
+    "minFDE_all": 1.208743810250271,
+    "energy_all": 5.446410724878715
+   },
+   "cv": {
+    "minADE_target": 0.3239369268949867,
+    "minFDE_target": 0.7244143786164104,
+    "ADEmean_target": 0.3239369268949867,
+    "FDEmean_target": 0.7244143745822551,
+    "minADE_all": 0.32215098011513854,
+    "minFDE_all": 0.7197927203880349,
+    "energy_all": 5.361608294182018
+   }
+  }
+ }
+}

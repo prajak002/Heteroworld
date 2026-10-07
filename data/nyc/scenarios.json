@@ -1,0 +1,48 @@
+{
+ "polygons": 544,
+ "single_file": 182,
+ "single_file_share_by_area": {
+  "chinatown_les": 0.261,
+  "midtown": 0.103,
+  "williamsburg": 0.51,
+  "jackson_heights": 0.361
+ },
+ "scenarios": [
+  {
+   "name": "nyc1",
+   "wide": 2.67,
+   "pinch": 1.17,
+   "length": 2.83,
+   "share_of_single_file": 0.401,
+   "tree_caused": 0.95,
+   "n": 73
+  },
+  {
+   "name": "nyc2",
+   "wide": 2.95,
+   "pinch": 0.81,
+   "length": 3.09,
+   "share_of_single_file": 0.319,
+   "tree_caused": 0.98,
+   "n": 58
+  },
+  {
+   "name": "nyc3",
+   "wide": 3.8,
+   "pinch": 1.0,
+   "length": 3.1,
+   "share_of_single_file": 0.247,
+   "tree_caused": 1.0,
+   "n": 45
+  },
+  {
+   "name": "nyc4",
+   "wide": 2.13,
+   "pinch": 1.04,
+   "length": 12.0,
+   "share_of_single_file": 0.033,
+   "tree_caused": 0.17,
+   "n": 6
+  }
+ ]
+}
